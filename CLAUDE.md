@@ -23,12 +23,12 @@ App runs at http://localhost:8501. No requirements.txt — dependencies (streaml
 - **core/analysis.py** — `calc_kd()` (Taiwan-style KD stochastic), `analyze()` (MA60 + signals), `current_status()` / `signal_label()`. Signal columns: `buy`, `sell`, `sp_break`, `sp_mess`, `sp_kd`, `sp_fixed`.
 - **core/chart.py** — `build_chart()` creates 2-row Plotly figure (candlestick+60MA / KD). Accepts `tw_colors` flag (red=up for TW, green=up for US).
 - **core/page.py** — `render_market_page()` is the shared UI renderer for both markets. All widget keys are namespaced with `market_key` prefix (`tw_` / `us_`). Page navigation uses `st.session_state["{market_key}_subpage"]`.
-- **core/portfolio.py** — `render_portfolio_page()` for inventory management. Transaction-based model (buy/sell records with date). Calculates breakeven price (損平價) = (total buy cost - total sell revenue) / remaining shares.
+- **core/portfolio.py** — `render_portfolio_page()` for inventory management. Simple model (shares + avg_cost). Auto-calculates breakeven price (損平價) factoring in TW sell-side fees (手續費 0.1425% + 證交稅 0.3%). Supports watchlist stock suggestions when adding holdings.
 
 ## Data Files
 
 - `stocks_tw.json` / `stocks_us.json` — Watchlists. Keys = group names, values = arrays of stock codes.
-- `portfolio.json` — Portfolio holdings with transaction history. Each entry: `{code, market, transactions: [{type, shares, price, date}]}`.
+- `portfolio.json` — Portfolio holdings (gitignored). Each entry: `{code, market, shares, avg_cost}`.
 - `進場與停利策略.md` — Strategy documentation.
 
 ## Key Conventions
@@ -38,4 +38,4 @@ App runs at http://localhost:8501. No requirements.txt — dependencies (streaml
 - **TW stock codes**: Numeric (e.g. "2330"). yfinance needs `.TW` (TWSE) or `.TWO` (OTC) suffix — `fetch_data_tw` tries both.
 - **US stock codes**: Uppercase tickers. Index symbols use `^` prefix (e.g. `^GSPC`).
 - **Caching**: `@st.cache_data(ttl=300)` for price data, `ttl=86400` for US stock names.
-- **Signal states**: 🟢 買進區 (price > 60MA & K > 60) / 🟡 轉強中 (above MA & K > 50) / 🔴 賣出區 (price < 60MA & K < 50) / ⚪ 觀望 (otherwise).
+- **Signal states**: 🟢 買進區 (price > 60MA & K > 60) / 🟡 轉強中 (price > 60MA & K > 50) / ⚪ 觀望 (price > 60MA & K ≤ 50) / 🟠 轉弱中 (price < 60MA & K ≥ 50) / 🔴 賣出區 (price < 60MA & K < 50).
