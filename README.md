@@ -65,9 +65,9 @@ streamlit run app.py
 
 ## 台股 vs 美股差異
 
-| | 台股 | 美股 |
+| | 台股 | 美股 | 加密貨幣 |
 |--|------|------|------|
-| K 線顏色 | 紅漲綠跌 | 綠漲紅跌 |
-| 股票名稱 | twstock 本地資料庫 | yfinance API |
-| 代碼格式 | 數字（如 2330） | 英文（如 NVDA） |
-| 損平價手續費 | 手續費 + 證交稅 | （沒在玩美股，可以給我建議） |
+| K 線顏色 | 紅漲綠跌 | 綠漲紅跌 | 🚧 Under Construction |
+| 股票名稱 | twstock 本地資料庫 | yfinance API | 🚧 Under Construction |
+| 代碼格式 | 數字（如 2330） | 英文（如 NVDA） | 🚧 Under Construction |
+| 損平價手續費 | 手續費 + 證交稅 | （沒在玩美股，可以給點建議） | 🚧 Under Construction |
