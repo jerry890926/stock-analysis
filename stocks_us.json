@@ -1,0 +1,8 @@
+{
+  "大盤": ["^GSPC", "^IXIC", "^DJI", "^SOX", "^RUT", "^VIX"],
+  "M7": ["NVDA", "MSFT", "GOOGL", "AAPL", "AMZN", "META", "TSLA"],
+  "ETF-指數": ["SPY", "VOO", "IVV", "QQQ", "DIA", "IWM", "VTI", "VT"],
+  "ETF-產業": ["SMH", "SOXX", "XLK", "VGT", "XLF", "XLE", "XLV"],
+  "ETF-槓桿": ["TQQQ", "SOXL", "UPRO", "SQQQ"],
+  "ETF-債券商品": ["TLT", "BND", "AGG", "GLD", "IAU", "SLV"]
+}
