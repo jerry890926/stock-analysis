@@ -99,4 +99,6 @@ def signal_label(s):
         return "🟡 轉強中"
     if s["sell_active"]:
         return "🔴 賣出區"
+    if not s["above_ma"] and s["k50"]:
+        return "🟠 轉弱中"
     return "⚪ 觀望"

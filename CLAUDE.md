@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Stock analysis system for Taiwan and US markets, implementing the "666 Strategy" — a 60-minute chart trading methodology using 60MA + KD(60,3,3) indicators. Built with Streamlit, supports watchlists, technical analysis, and portfolio tracking.
+Stock analysis system for Taiwan and US markets — a 60-minute chart trading methodology using 60MA + KD(60,3,3) indicators. Built with Streamlit, supports watchlists, technical analysis, and portfolio tracking.
 
 ## Running the App
 

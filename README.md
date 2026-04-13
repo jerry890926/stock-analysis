@@ -1,6 +1,6 @@
 # 股票分析系統
 
-台股 / 美股技術分析工具，基於 **666 戰法**（60 分鐘 K 線 + 60MA + KD(60,3,3)）策略，提供買賣訊號判斷與庫存管理。
+台股 / 美股技術分析工具，基於 60 分鐘 K 線 + 60MA + KD(60,3,3) 策略，提供買賣訊號判斷與庫存管理。
 
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
