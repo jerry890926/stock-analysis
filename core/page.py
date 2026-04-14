@@ -6,6 +6,7 @@ import pandas as pd
 from core.analysis import analyze, current_status, signal_label
 from core.chart import build_chart
 from core.data import load_watchlist, save_watchlist, get_all_codes
+from core.institutional import fetch_institutional, fetch_margin
 
 
 def render_market_page(market_key, watchlist_path, fetch_data_fn, fetch_name_fn,
@@ -215,6 +216,44 @@ def _render_analysis(sel_code, period, fixed_pct, fetch_data_fn, fetch_name_fn, 
 
     chart_title = f"{sel_code} {display_name} — 分析"
     st.plotly_chart(build_chart(df, chart_title, fixed_pct, tw_colors), use_container_width=True)
+
+    # 法人進出 / 資券變化（台股限定）
+    if tw_colors:
+        st.subheader("每日籌碼")
+        tab1, tab2 = st.tabs(["法人進出", "資券變化"])
+
+        with tab1:
+            with st.spinner("載入法人進出資料..."):
+                inst_df = fetch_institutional(sel_code)
+            if not inst_df.empty:
+                st.dataframe(
+                    inst_df, use_container_width=True, hide_index=True,
+                    column_config={
+                        "外資": st.column_config.NumberColumn(format="%d 張"),
+                        "投信": st.column_config.NumberColumn(format="%d 張"),
+                        "自營商": st.column_config.NumberColumn(format="%d 張"),
+                        "合計": st.column_config.NumberColumn(format="%d 張"),
+                    },
+                )
+            else:
+                st.info("暫時無法取得法人進出資料")
+
+        with tab2:
+            with st.spinner("載入資券變化資料..."):
+                margin_df = fetch_margin(sel_code)
+            if not margin_df.empty:
+                st.dataframe(
+                    margin_df, use_container_width=True, hide_index=True,
+                    column_config={
+                        "融資餘額": st.column_config.NumberColumn(format="%d"),
+                        "融資增減": st.column_config.NumberColumn(format="%+d"),
+                        "融券餘額": st.column_config.NumberColumn(format="%d"),
+                        "融券增減": st.column_config.NumberColumn(format="%+d"),
+                        "資券互抵": st.column_config.NumberColumn(format="%d"),
+                    },
+                )
+            else:
+                st.info("暫時無法取得資券變化資料")
 
     # 訊號紀錄
     st.subheader("訊號紀錄")

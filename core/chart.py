@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 
 def build_chart(df, title, fixed_pct=20, tw_colors=True):
     """
-    建立 K 線 + KD 分析圖表。
+    建立 K 線 + 成交量 + KD 分析圖表。
     tw_colors=True: 紅漲綠跌（台股慣例）
     tw_colors=False: 綠漲紅跌（美股慣例）
     """
@@ -16,9 +16,9 @@ def build_chart(df, title, fixed_pct=20, tw_colors=True):
         up_color, down_color = "#26A69A", "#EF5350"
 
     fig = make_subplots(
-        rows=2, cols=1, shared_xaxes=True,
-        vertical_spacing=0.06, row_heights=[0.7, 0.3],
-        subplot_titles=["60 分鐘 K 線 ＋ 60MA", "KD (60, 3, 3)"],
+        rows=3, cols=1, shared_xaxes=True,
+        vertical_spacing=0.04, row_heights=[0.55, 0.15, 0.30],
+        subplot_titles=["60 分鐘 K 線 ＋ 60MA", "成交量", "KD (60, 3, 3)"],
     )
 
     # K 線
@@ -70,28 +70,37 @@ def build_chart(df, title, fixed_pct=20, tw_colors=True):
             annotation_text=f"停利目標 {target:.1f} (+{fixed_pct}%)",
         )
 
+    # 成交量
+    vol_colors = [up_color if c >= o else down_color
+                  for c, o in zip(df["Close"], df["Open"])]
+    fig.add_trace(go.Bar(
+        x=df.index, y=df["Volume"], name="成交量",
+        marker_color=vol_colors, opacity=0.7,
+        showlegend=False,
+    ), row=2, col=1)
+
     # KD
     fig.add_trace(go.Scatter(
         x=df.index, y=df["K"], name="K",
         line=dict(color="#2196F3", width=1.5),
-    ), row=2, col=1)
+    ), row=3, col=1)
     fig.add_trace(go.Scatter(
         x=df.index, y=df["D"], name="D",
         line=dict(color="#FF5722", width=1.5),
-    ), row=2, col=1)
+    ), row=3, col=1)
 
-    fig.add_hline(y=50, row=2, col=1,
+    fig.add_hline(y=50, row=3, col=1,
                   line=dict(color="gray", width=1, dash="dot"),
                   annotation_text="K=50 轉強")
-    fig.add_hline(y=60, row=2, col=1,
+    fig.add_hline(y=60, row=3, col=1,
                   line=dict(color="#FF9800", width=1, dash="dash"),
                   annotation_text="K=60 買進")
-    fig.add_hline(y=80, row=2, col=1,
+    fig.add_hline(y=80, row=3, col=1,
                   line=dict(color="#EF5350", width=1, dash="dot"),
                   annotation_text="K=80 過熱")
 
     fig.update_layout(
-        title=title, height=780,
+        title=title, height=900,
         xaxis_rangeslider_visible=False,
         template="plotly_dark",
         legend=dict(orientation="h", yanchor="bottom", y=1.02,
@@ -99,6 +108,7 @@ def build_chart(df, title, fixed_pct=20, tw_colors=True):
         margin=dict(l=50, r=30, t=80, b=30),
     )
     fig.update_yaxes(title_text="股價", row=1, col=1)
-    fig.update_yaxes(title_text="KD", range=[0, 100], row=2, col=1)
+    fig.update_yaxes(title_text="成交量", row=2, col=1)
+    fig.update_yaxes(title_text="KD", range=[0, 100], row=3, col=1)
 
     return fig
