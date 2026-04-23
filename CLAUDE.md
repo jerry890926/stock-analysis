@@ -38,4 +38,4 @@ App runs at http://localhost:8501. No requirements.txt — dependencies (streaml
 - **TW stock codes**: Numeric (e.g. "2330"). yfinance needs `.TW` (TWSE) or `.TWO` (OTC) suffix — `fetch_data_tw` tries both.
 - **US stock codes**: Uppercase tickers. Index symbols use `^` prefix (e.g. `^GSPC`).
 - **Caching**: `@st.cache_data(ttl=300)` for price data, `ttl=86400` for US stock names.
-- **Signal states**: 🟢 買進區 (price > 60MA & K > 60) / 🟡 轉強中 (price > 60MA & K > 50) / ⚪ 觀望 (price > 60MA & K ≤ 50) / 🟠 轉弱中 (price < 60MA & K ≥ 50) / 🔴 賣出區 (price < 60MA & K < 50).
+- **Signal states**: 🔥 過熱區 (price > 60MA & K > 80) / 🟢 買進區 (price > 60MA & 60 < K ≤ 80) / 🟡 轉強中 (price > 60MA & 50 < K ≤ 60) / ⚪ 觀望 (price > 60MA & K ≤ 50) / 🟠 轉弱中 (price < 60MA & K ≥ 50) / 🔴 賣出區 (price < 60MA & K < 50).

@@ -86,6 +86,7 @@ def current_status(df):
         "above_ma": r["Close"] > r["MA60"],
         "k50": r["K"] > 50,
         "k60": r["K"] > 60,
+        "k80": r["K"] > 80,
         "buy_active": r["Close"] > r["MA60"] and r["K"] > 60,
         "sell_active": r["Close"] < r["MA60"] and r["K"] < 50,
     }
@@ -93,6 +94,8 @@ def current_status(df):
 
 def signal_label(s):
     """根據狀態回傳訊號文字"""
+    if s["above_ma"] and s["k80"]:
+        return "🔥 過熱區"
     if s["buy_active"]:
         return "🟢 買進區"
     if s["above_ma"] and s["k50"]:
